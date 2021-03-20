@@ -95,4 +95,25 @@ describe('Source Test', () => {
         );
     });
 
+    test('Parse ecld data from source', () => {
+        Mock({
+            '/box': {
+                'file.ecld': `
+                    value = 100
+                `
+            }
+        });
+        const data = SourceFactory.read(
+            '/box/file.ecld',
+            'ecld'
+        );
+        expect(
+            data
+        ).toStrictEqual(
+            {
+                value: 100
+            }
+        );
+    });
+
 });

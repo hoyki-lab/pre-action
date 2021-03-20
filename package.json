@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "commander": "^7.1.0",
+    "ecld": "^1.0.1",
     "json5": "^2.2.0",
     "toml": "^3.0.0",
     "yaml": "^1.10.2"
