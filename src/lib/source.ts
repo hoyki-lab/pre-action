@@ -17,7 +17,9 @@ export abstract class SourceFactory{
             case 'yaml':
                 return YamlParse(source);
             case 'toml':
-                return TomlParse(source);
+                return {
+                    ...TomlParse(source)
+                };
         }
     }
 
