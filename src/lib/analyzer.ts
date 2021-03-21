@@ -27,15 +27,17 @@ class RootAnalyzer{
     analyze(){
         const root = this._root instanceof Array ? this._root : [this._root];
         root.forEach((element) => {
+            const filePath = isAbsolute(element.file) 
+                ? element.file 
+                : resolve(this._cwd, element.file);
             const dataSource = SourceFactory.read(
-                isAbsolute(element.file) 
-                    ? element.file 
-                    : resolve(this._cwd, element.file),
+                filePath,
                 element?.format ?? 'json'
             );
             this.search(
                 element.content,
                 dataSource,
+                filePath,
                 ''
             );
         });
@@ -44,6 +46,7 @@ class RootAnalyzer{
     private search(
         contentRoot: any,
         contentSource : any,
+        file : string,
         location : string
     ){
         if(!contentRoot) return;
@@ -55,7 +58,7 @@ class RootAnalyzer{
                                 element;
             if(ref.required === true){
                 if(!ObjectHas(contentSource, actualLocation)){
-                    console.error(`'${actualLocation}' pattern dont exists`);
+                    console.error(`In file: ${file} -> '${actualLocation}' pattern dont exists`);
                     process.exit(1);
                 }
             }
@@ -68,6 +71,7 @@ class RootAnalyzer{
                 this.search(
                     ref.content,
                     contentSource,
+                    file,
                     actualLocation
                 );
             }

@@ -86,7 +86,7 @@ describe('Analyzer', () => {
         );
         expect((console.error as any).mock.calls[0]).toEqual(
             [
-                "'key2.key2_1.key_2_1_1' pattern dont exists"
+                "In file: /box/file.json -> 'key2.key2_1.key_2_1_1' pattern dont exists"
             ]
         );
         expect(mockExit).toHaveBeenCalledWith(1);
