@@ -11,6 +11,7 @@ export function cli(){
     program.option('-f, --format', 'format of file', 'json');
     program.option('-c, --config', 'path of file', process.cwd());
     program.option('-n, --name-file', 'name file', '.preactionrc');
+    program.option('-s, --stop', 'stop process when condition failed', true);
     program.parse(process.argv);
     program.action((event, options) => {
         const mainConfigRoot = SourceFactory.read(
