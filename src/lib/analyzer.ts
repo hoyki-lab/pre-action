@@ -5,13 +5,14 @@ import {has as ObjectHas} from 'dot-prop';
 export abstract class Analyzer{
 
     static process(
-        root : RootDefinition | RootDefinition[]
+        root : RootDefinition | RootDefinition[],
+        cwd : string
     ){
-        const cwd = process.cwd();
         const rootAnalyzer = new RootAnalyzer(
             root,
             cwd
         );
+        rootAnalyzer.analyze();
     }
 
 }
