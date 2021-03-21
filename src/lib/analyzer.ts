@@ -1,6 +1,6 @@
 import {isAbsolute, resolve} from 'path';
 import {SourceFactory} from './source';
-import {has as ObjectHas} from 'dot-prop';
+import {has as ObjectHas, get as ObjectGet} from 'dot-prop';
 
 export abstract class Analyzer{
 
@@ -26,9 +26,7 @@ class RootAnalyzer{
 
     analyze(){
         const root = this._root instanceof Array ? this._root : [this._root];
-        const warningOutput = [];
         root.forEach((element) => {
-            const warning = [];
             const dataSource = SourceFactory.read(
                 isAbsolute(element.file) 
                     ? element.file 
@@ -38,11 +36,7 @@ class RootAnalyzer{
             this.search(
                 element.content,
                 dataSource,
-                warning,
                 ''
-            );
-            warningOutput.push(
-                warning
             );
         });
     }
@@ -50,7 +44,6 @@ class RootAnalyzer{
     private search(
         contentRoot: any,
         contentSource : any,
-        warnings : any[],
         location : string
     ){
         if(!contentRoot) return;
@@ -62,21 +55,19 @@ class RootAnalyzer{
                                 element;
             if(ref.required === true){
                 if(!ObjectHas(contentSource, actualLocation)){
-                    console.error('');
+                    console.error(`'${actualLocation}' pattern dont exists`);
                     process.exit(1);
                 }
             }
             if(ref.warning === true){
                 if(!ObjectHas(contentSource, actualLocation)){
-                    console.error('');
-                    process.exit(1);
+                    // TODO
                 }
             }
-            if(ObjectHas(contentRoot, 'content')){
+            if(ObjectHas(ref, 'content')){
                 this.search(
-                    contentRoot.content,
+                    ref.content,
                     contentSource,
-                    warnings,
                     actualLocation
                 );
             }
