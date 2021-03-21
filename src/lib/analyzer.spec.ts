@@ -92,4 +92,44 @@ describe('Analyzer', () => {
         expect(mockExit).toHaveBeenCalledWith(1);
     });
 
+    test('Generate exit code "0" if required exists (sub levels)', () => {
+        MockFs({
+            '/box': {
+                'file.json': `
+                    {
+                        "key2": {
+                            "key2_1": {
+                                "key_2_1_1": 1,
+                                "key_2_1_2": 2
+                            }
+                        }
+                    }
+                `
+            }
+        });
+        Analyzer.process(
+            {
+                file: "./file.json",
+                format: "json",
+                content: {
+                    key2: {
+                        required: true,
+                        content: {
+                            key2_1: {
+                                required: true,
+                                content: {
+                                    key_2_1_1: {
+                                        required: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/box'
+        );
+        expect(mockExit).toBeCalledTimes(0);
+    });
+
 });
