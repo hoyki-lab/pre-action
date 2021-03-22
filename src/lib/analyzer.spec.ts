@@ -1,7 +1,11 @@
 import * as MockFs from 'mock-fs';
 import {mockProcessExit} from 'jest-mock-process';
+import * as Inquirer from 'inquirer';
 const mockConsole = require("jest-mock-console");
 import {Analyzer} from './analyzer';
+
+jest.setTimeout(1000 * 10);
+
 describe('Analyzer', () => {
 
     let mockExit : ReturnType<typeof mockProcessExit>;
@@ -15,6 +19,7 @@ describe('Analyzer', () => {
     afterEach(() => {
         MockFs.restore();
         restoreConsole();
+        jest.restoreAllMocks();
     });
 
     test('Generate exit code "1" if required dont exists', () => {
@@ -37,7 +42,10 @@ describe('Analyzer', () => {
                     }
                 }
             },
-            '/box'
+            {
+                cwd: '/box',
+                stop: false
+            }
         );
         expect((console.error as any).mock.calls[0]).toEqual(
             [
@@ -82,7 +90,10 @@ describe('Analyzer', () => {
                     }
                 }
             },
-            '/box'
+            {
+                cwd: '/box',
+                stop: false
+            }
         );
         expect((console.error as any).mock.calls[0]).toEqual(
             [
@@ -127,9 +138,45 @@ describe('Analyzer', () => {
                     }
                 }
             },
-            '/box'
+            {
+                cwd: '/box',
+                stop: false
+            }
         );
         expect(mockExit).toBeCalledTimes(0);
+    });
+
+    test('Generate input interface for warning', async () => {
+        MockFs({
+            '/box': {
+                'file.json': `
+                    {
+                        "key2": "value"
+                    }
+                `
+            }
+        });
+        const inquirerMock = jest.spyOn(Inquirer, 'prompt').mockResolvedValue(
+            {
+                question: true
+            }
+        );
+        await Analyzer.process(
+            {
+                file: "./file.json",
+                format: "json",
+                content: {
+                    key: {
+                        warning: true
+                    },
+                }
+            },
+            {
+                cwd: '/box',
+                stop: false
+            }
+        );
+        expect(inquirerMock).toHaveBeenCalled();
     });
 
 });
