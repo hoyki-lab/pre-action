@@ -43,7 +43,7 @@ describe('Analyzer', () => {
                 }
             },
             {
-                cwd: '/box',
+                config: '/box',
                 stop: false
             }
         );
@@ -91,8 +91,8 @@ describe('Analyzer', () => {
                 }
             },
             {
-                cwd: '/box',
-                stop: false
+                config: '/box',
+                stop: false,
             }
         );
         expect((console.error as any).mock.calls[0]).toEqual(
@@ -139,7 +139,7 @@ describe('Analyzer', () => {
                 }
             },
             {
-                cwd: '/box',
+                config: '/box',
                 stop: false
             }
         );
@@ -172,7 +172,7 @@ describe('Analyzer', () => {
                 }
             },
             {
-                cwd: '/box',
+                config: '/box',
                 stop: false
             }
         );

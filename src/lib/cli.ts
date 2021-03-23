@@ -20,7 +20,7 @@ export function cli(){
         );
         Analyzer.process(
             mainConfigRoot[event],
-            options.config
+            options
         );
     });
 }

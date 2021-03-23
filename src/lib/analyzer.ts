@@ -32,7 +32,7 @@ class RootAnalyzer{
             const element = root[key];
             const filePath = isAbsolute(element.file) 
                 ? element.file 
-                : resolve(this._options.cwd, element.file);
+                : resolve(this._options.config, element.file);
             const dataSource = SourceFactory.read(
                 filePath,
                 element?.format ?? 'json'
@@ -115,6 +115,8 @@ export type RootDefinition = {
 }
 
 export type OptionsAnalyzer = {
-    cwd : string,
-    stop : boolean
+    config? : string,
+    format?: string,
+    nameFile?: string,
+    stop? : boolean
 }
