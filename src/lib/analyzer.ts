@@ -111,7 +111,8 @@ class RootAnalyzer{
 export type RootDefinition = {
     file : string,
     format: 'json' | 'json5' | 'yaml' | 'toml' | 'elcd',
-    content : any
+    extends?: string,
+    content? : any
 }
 
 export type OptionsAnalyzer = {
