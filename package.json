@@ -36,5 +36,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional"
     }
+  },
+  "bin": {
+    "pre-action": "./dist/index.js"
   }
 }
