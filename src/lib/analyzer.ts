@@ -1,4 +1,5 @@
 import {isAbsolute, resolve, normalize} from 'path';
+import {existsSync} from 'fs';
 import {SourceFactory} from './source';
 import * as Inquirer from 'inquirer';
 import {has as ObjectHas} from 'dot-prop';
@@ -33,6 +34,11 @@ class RootAnalyzer{
             const filePath = isAbsolute(element.file) 
                 ? element.file 
                 : resolve(this._options.config, element.file);
+            // Analyze key 'exists' for file
+            if(element.exists === true){
+                this.existsFile(filePath);
+                continue;
+            }
             const dataSource = SourceFactory.read(
                 filePath,
                 element?.format ?? 'json'
@@ -112,6 +118,15 @@ class RootAnalyzer{
         }
     }
 
+    private existsFile(
+        file: string,
+    ){
+        if(!existsSync(file)){
+            console.error(`File: ${file} -> dont exists`);
+            process.exit(1);
+        }
+    }
+
 }
 
 export abstract class RootAnalyzerUtil{
@@ -125,6 +140,7 @@ export abstract class RootAnalyzerUtil{
 export type RootDefinition = {
     file : string,
     format: 'json' | 'json5' | 'yaml' | 'toml' | 'elcd',
+    exists?: boolean,
     extends?: string,
     content? : any
 }
