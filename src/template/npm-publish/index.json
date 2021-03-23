@@ -1,5 +1,23 @@
 {
+    "name": {
+        "required": true
+    },
+    "version": {
+        "required": true
+    },
+    "author": {
+        "required": true
+    },
+    "main": {
+        "required": true
+    },
+    "license": {
+        "warning": true
+    },
     "repository": {
+        "warning": true
+    },
+    "files": {
         "warning": true
     }
 }
