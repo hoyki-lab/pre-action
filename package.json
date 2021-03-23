@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hoyki-org/pre-action"
+    "url": "https://github.com/hoyki-lab/pre-action"
   },
   "devDependencies": {
     "@types/jest": "^26.0.21",
