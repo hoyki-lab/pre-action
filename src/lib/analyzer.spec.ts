@@ -2,7 +2,7 @@ import * as MockFs from 'mock-fs';
 import {mockProcessExit} from 'jest-mock-process';
 import * as Inquirer from 'inquirer';
 const mockConsole = require("jest-mock-console");
-import {Analyzer} from './analyzer';
+import {Analyzer, RootAnalyzerUtil} from './analyzer';
 
 jest.setTimeout(1000 * 10);
 
@@ -177,6 +177,35 @@ describe('Analyzer', () => {
             }
         );
         expect(inquirerMock).toHaveBeenCalled();
+    });
+
+    test('Apply extends in "content" key', async () => {
+        MockFs({
+            '/box': {
+                'file.json': `
+                    {
+                        "key2": "value"
+                    }
+                `
+            }
+        });
+        jest.spyOn(RootAnalyzerUtil, 'getExtends').mockReturnValue({
+            key2: {
+                required: true
+            }
+        });
+        await Analyzer.process(
+            {
+                file: "./file.json",
+                format: "json",
+                extends: "pre-action/template/npm-publish"
+            },
+            {
+                config: '/box',
+                stop: false
+            }
+        );
+        expect(mockExit).toBeCalledTimes(0);
     });
 
 });

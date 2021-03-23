@@ -1,4 +1,4 @@
-import {isAbsolute, resolve} from 'path';
+import {isAbsolute, resolve, normalize} from 'path';
 import {SourceFactory} from './source';
 import * as Inquirer from 'inquirer';
 import {has as ObjectHas} from 'dot-prop';
@@ -37,6 +37,12 @@ class RootAnalyzer{
                 filePath,
                 element?.format ?? 'json'
             );
+            if(typeof element.extends === 'string'){
+                element.content = {
+                    ...(RootAnalyzerUtil.getExtends(element.extends)),
+                    ...element.content ?? {}
+                }
+            }
             await this.search(
                 element.content,
                 dataSource,
@@ -104,6 +110,14 @@ class RootAnalyzer{
                 );
             }
         }
+    }
+
+}
+
+export abstract class RootAnalyzerUtil{
+
+    public static getExtends(extend : string){
+        return require(normalize(extend + '/index.json'));
     }
 
 }
