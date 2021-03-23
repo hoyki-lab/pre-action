@@ -33,9 +33,11 @@ Options
 
 ##### Example
 
+###### One Level
+
 .preactionrc
 
-```bash
+```json
 {
     "publish": {
         "file": "./package.json",
@@ -48,6 +50,71 @@ Options
     }
 }
 ```
+
+###### Nested Validation
+
+.preactionrc
+
+```json
+{
+    "publish": {
+        "file": "./package.json",
+        "format": "json",
+        "content": {
+            "repository": {
+                "required": true,
+                "content": {
+                    "required": true
+                }
+            }
+        }
+    }
+}
+```
+
+###### Warning interface
+
+.preactionrc
+
+```json
+{
+    "publish": {
+        "file": "./package.json",
+        "format": "json",
+        "content": {
+            "repository": {
+                "warning": true
+            }
+        }
+    }
+}
+```
+
+If you use the 'warning' option, the dynamic interface will be activated.
+
+###### Extends
+
+We can also inherit an already established structure
+
+.preactionrc
+
+```json
+{
+    "publish": {
+        "file": "./package.json",
+        "format": "json",
+        "extends": "pre-action/template/npm-publish"
+    }
+}
+```
+
+List of available structures:
+
+| name   | Description |
+| ----------- | ---------- |
+| pre-action/template/npm-publish   | Structure for publish packages |
+
+# Call
 
 we can called with this command
 
