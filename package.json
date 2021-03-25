@@ -8,6 +8,10 @@
   "files": [
     "/dist"
   ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
   "dependencies": {
     "commander": "^7.1.0",
     "dot-prop": "^6.0.1",
