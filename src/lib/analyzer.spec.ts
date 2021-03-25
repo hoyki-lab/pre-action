@@ -44,12 +44,12 @@ describe('Analyzer', () => {
             },
             {
                 config: '/box',
-                stop: false
+                stop: true
             }
         );
         expect((console.error as any).mock.calls[0]).toEqual(
             [
-                "'key' pattern dont exists"
+                "In file: /box/file.json -> 'key' pattern dont exists"
             ]
         );
         expect(mockExit).toHaveBeenCalledWith(1);
@@ -92,7 +92,7 @@ describe('Analyzer', () => {
             },
             {
                 config: '/box',
-                stop: false,
+                stop: true,
             }
         );
         expect((console.error as any).mock.calls[0]).toEqual(
@@ -206,6 +206,89 @@ describe('Analyzer', () => {
             }
         );
         expect(mockExit).toBeCalledTimes(0);
+    });
+
+    test('Generate exit code "1" if dont exists file', () => {
+        MockFs({
+            '/box': {
+                'file2.json': `
+                    {
+                        "key2": "value"
+                    }
+                `
+            }
+        });
+        Analyzer.process(
+            {
+                file: "./file.json",
+                format: "json",
+                exists: true
+            },
+            {
+                config: '/box',
+                stop: true
+            }
+        );
+        expect((console.error as any).mock.calls[0]).toEqual(
+            [
+                "File or Directory: /box/file.json -> dont exists"
+            ]
+        );
+        expect(mockExit).toHaveBeenCalledWith(1);
+    });
+
+    test('Generate exit code "1" if isNotEmpty is true and is not directory', () => {
+        MockFs({
+            '/box': {
+                'file2': `
+                    {
+                        "key2": "value"
+                    }
+                `
+            }
+        });
+        Analyzer.process(
+            {
+                file: "./file2",
+                isNotEmpty: true
+            },
+            {
+                config: '/box',
+                stop: true
+            }
+        );
+        expect((console.error as any).mock.calls[0]).toEqual(
+            [
+                "/box/file2 -> is not a directory"
+            ]
+        );
+        expect(mockExit).toHaveBeenCalledWith(1);
+    });
+
+    test('Generate exit code "1" if isNotEmpty is true and directory is empty', () => {
+        MockFs({
+            '/box': {
+                'file2': {
+
+                }
+            }
+        });
+        Analyzer.process(
+            {
+                file: "./file2",
+                isNotEmpty: true
+            },
+            {
+                config: '/box',
+                stop: true
+            }
+        );
+        expect((console.error as any).mock.calls[0]).toEqual(
+            [
+                "/box/file2 -> is empty"
+            ]
+        );
+        expect(mockExit).toHaveBeenCalledWith(1);
     });
 
 });
