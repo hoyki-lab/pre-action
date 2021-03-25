@@ -114,9 +114,40 @@ List of available structures:
 | ----------- | ---------- |
 | pre-action/template/npm-publish   | Structure for publish packages |
 
+###### Only check file
+
+You have the option of validating only that a file exists
+
+.preactionrc
+
+```json
+{
+    "publish": {
+        "file": "./package.json",
+        "format": "json",
+        "exists": true
+    }
+}
+```
+
+###### Only check directory
+
+You have the option to validate if a directory is empty
+
+.preactionrc
+
+```json
+{
+    "publish": {
+        "file": "./mydir",
+        "isNotEmpty": true
+    }
+}
+```
+
 # Call
 
-we can called with this command
+we can call with this command
 
 ```bash
 pre-action publish
