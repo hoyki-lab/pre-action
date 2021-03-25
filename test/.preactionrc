@@ -1,0 +1,11 @@
+{
+    "publish": {
+        "file": "./file.json",
+        "format": "json",
+        "content": {
+            "key": {
+                "warning": true
+            }
+        }
+    }
+}
