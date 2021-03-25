@@ -1,5 +1,5 @@
 import {isAbsolute, resolve, normalize} from 'path';
-import {existsSync} from 'fs';
+import {existsSync, lstatSync, readdirSync} from 'fs';
 import {SourceFactory} from './source';
 import * as Inquirer from 'inquirer';
 import {has as ObjectHas} from 'dot-prop';
@@ -36,7 +36,14 @@ class RootAnalyzer{
                 : resolve(this._options.config, element.file);
             // Analyze key 'exists' for file
             if(element.exists === true){
-                this.existsFile(filePath);
+                RootAnalyzerUtil.existsFile(filePath);
+                continue;
+            }
+            // Analyze folder has contain
+            if(
+                element.isNotEmpty === true
+            ){
+                RootAnalyzerUtil.directoryIsNotEmpty(filePath)
                 continue;
             }
             const dataSource = SourceFactory.read(
@@ -118,18 +125,32 @@ class RootAnalyzer{
         }
     }
 
-    private existsFile(
+}
+
+export abstract class RootAnalyzerUtil{
+
+    public static existsFile(
         file: string,
     ){
         if(!existsSync(file)){
-            console.error(`File: ${file} -> dont exists`);
+            console.error(`File or Directory: ${file} -> dont exists`);
             process.exit(1);
         }
     }
 
-}
-
-export abstract class RootAnalyzerUtil{
+    public static directoryIsNotEmpty(
+        file: string,
+    ){
+        RootAnalyzerUtil.existsFile(file);
+        if(!(lstatSync(file).isDirectory())){
+            console.error(`${file} -> is not a directory`);
+            process.exit(1);
+        }
+        if(readdirSync(file).length === 0){
+            console.error(`${file} -> is empty`);
+            process.exit(1);
+        }
+    }
 
     public static getExtends(extend : string){
         return require(normalize(extend + '/index.json'));
@@ -141,6 +162,7 @@ export type RootDefinition = {
     file : string,
     format: 'json' | 'json5' | 'yaml' | 'toml' | 'ecld',
     exists?: boolean,
+    isNotEmpty?: boolean,
     extends?: string,
     content? : any
 }
