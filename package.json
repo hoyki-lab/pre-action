@@ -1,9 +1,8 @@
 {
   "name": "pre-action",
   "version": "1.0.0",
-  "author": "hoyki-org",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "description": "Make a validation before any future actions",
+  "author": "hoyki-lab",
   "license": "MIT",
   "files": [
     "/dist"
@@ -43,5 +42,11 @@
   },
   "bin": {
     "pre-action": "./dist/index.js"
-  }
+  },
+  "keywords": [
+    "validation",
+    "pre-action",
+    "pipeline",
+    "cli"
+  ]
 }
