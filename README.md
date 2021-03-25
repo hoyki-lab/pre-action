@@ -159,4 +159,8 @@ and also we can combine this command with a flow
 pre-action publish && npm publish
 ```
 
+# Create custom extends
+
+Create a directory that has a file 'index.json' in the main root and establish the path of that folder or if it were the case the name of the module.
+
 If you want to help this project, **go to the github repository of this project**
