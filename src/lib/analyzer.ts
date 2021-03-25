@@ -160,7 +160,7 @@ export abstract class RootAnalyzerUtil{
 
 export type RootDefinition = {
     file : string,
-    format: 'json' | 'json5' | 'yaml' | 'toml' | 'ecld',
+    format?: 'json' | 'json5' | 'yaml' | 'toml' | 'ecld',
     exists?: boolean,
     isNotEmpty?: boolean,
     extends?: string,
